@@ -29,9 +29,11 @@ def exec_thread(symbols,word_length:int,words_amount:int=10):
         futures = []
         for i in range (words_amount):
             futures.append(executor.submit(fuzz_generator,symbols,word_length))
-        for future in concurrent.futures.as_completed(futures):
-            res=future.result()
-            print(res)
+
+        with open("file.txt", 'w') as file:
+            for future in concurrent.futures.as_completed(futures):
+                res=future.result()
+                file.write(f'{res}\n')
     finish=datetime.datetime.now()
     execution_speed = finish-start
     logging.debug(f"Execution_speed = {execution_speed}")
